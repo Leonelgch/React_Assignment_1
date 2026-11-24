@@ -1,11 +1,17 @@
 import { useState } from 'react';
+import Avatar from './Avatar.jsx';
 
 export default function Player({
+  avatarSrc,
   initialName,
   symbol,
   isActive,
   onChangeName,
+  onChangeAvatar,
+  onMouseAvatar,
+  playerStats
 }) {
+
   const [playerName, setPlayerName] = useState(initialName);
   const [isEditing, setIsEditing] = useState(false);
 
@@ -17,22 +23,32 @@ export default function Player({
     }
   }
 
-  function handleChange(event) {
+  function handleChangeName(event) {
     setPlayerName(event.target.value);
   }
-
   let editablePlayerName = <span className="player-name">{playerName}</span>;
-  // let btnCaption = 'Edit';
-
   if (isEditing) {
     editablePlayerName = (
-      <input type="text" required value={playerName} onChange={handleChange} />
+      <input type="text" required value={playerName} onChange={handleChangeName} />
     );
-    // btnCaption = 'Save';
+  }
+  
+  function handleChangeAvatar(avatarSrc) {
+    onChangeAvatar(symbol, avatarSrc);
+  }
+
+  function handleShowStats(status) {
+          onMouseAvatar(status,symbol);
   }
 
   return (
     <li className={isActive ? 'active' : undefined}>
+      <Avatar
+        src={avatarSrc}
+        onChangeSrc={handleChangeAvatar}
+        onMouseOver={handleShowStats}
+        stats={playerStats}
+        />
       <span className="player">
         {editablePlayerName}
         <span className="player-symbol">{symbol}</span>
